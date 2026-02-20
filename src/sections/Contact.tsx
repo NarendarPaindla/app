@@ -14,9 +14,9 @@ const SOCIALS = [
 ];
 
 const INFO = [
-    { icon: <Mail size={16} />, label: 'Email', value: 'paindla.narendar@gmail.com' },
+    { icon: <Mail size={16} />, label: 'Email', value: 'narendarreddypaindla@gmail.com' },
     { icon: <MapPin size={16} />, label: 'Location', value: 'Hyderabad, India' },
-    { icon: <Phone size={16} />, label: 'Phone', value: '+91 XXXXXXXXXX' },
+    { icon: <Phone size={16} />, label: 'Phone', value: '+91 6300089705' },
 ];
 
 export default function Contact() {
@@ -134,7 +134,7 @@ export default function Contact() {
                 <motion.div {...up(0.5)}
                     style={{ marginTop: '5rem', paddingTop: '2rem', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--t3)' }}>
-                        © {new Date().getFullYear()} Paindla Narendar Reddy — Built with React + Vite · Forge Editorial Design
+                        © {new Date().getFullYear()} Paindla Narendar Reddy ---0--- Techincal Trainer
                     </p>
                 </motion.div>
             </div>

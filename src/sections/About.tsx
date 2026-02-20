@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { careerTimeline } from '../data/portfolio';
 
-const BADGES = ['React', 'Next.js', 'Node.js', 'TypeScript', 'MongoDB', 'Docker', 'System Design', 'PostgreSQL', 'REST APIs', 'Python', 'TailwindCSS', 'Socket.io', 'Git', 'CI/CD'];
+const BADGES = ['React', 'Angular', 'Node.js', 'SpringBoot', 'TypeScript', 'MongoDB', 'System Design', 'REST APIs', 'Python', 'Java', 'C++', 'TailwindCSS', 'Git', 'AI'];
 
 
 
@@ -47,7 +47,7 @@ export default function About() {
                         <p style={{ fontSize: '1.05rem', color: 'var(--t2)', lineHeight: 1.8 }}>
                             My philosophy:{' '}
                             <em style={{ color: 'var(--ember)', fontStyle: 'italic', fontFamily: 'var(--font-display)' }}>
-                                "Ship fast. Teach deeply. Iterate always."
+                                "Best will come when beat the best"
                             </em>
                         </p>
                     </motion.div>
@@ -114,7 +114,7 @@ export default function About() {
                         className="card"
                         style={{ gridColumn: 'span 6', padding: '2rem' }}
                     >
-                        <p className="eyebrow" style={{ marginBottom: '1.5rem' }}>Tech Arsenal</p>
+                        <p className="eyebrow" style={{ marginBottom: '1.5rem' }}>Tech Stack</p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                             {BADGES.map((b, i) => (
                                 <motion.span
