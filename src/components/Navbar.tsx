@@ -8,13 +8,12 @@ const NAV = [
     { label: 'Experience', id: 'experience' },
     { label: 'Skills', id: 'skills' },
     { label: 'Projects', id: 'projects' },
+    { label: 'Gallery', id: 'gallery' },
     { label: 'Certificates', id: 'certificates' },
     { label: 'Contact', id: 'contact' },
 ];
 
-function scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-}
+const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -23,13 +22,10 @@ export default function Navbar() {
 
     useEffect(() => {
         const onScroll = () => {
-            setScrolled(window.scrollY > 40);
+            setScrolled(window.scrollY > 50);
             for (let i = NAV.length - 1; i >= 0; i--) {
                 const el = document.getElementById(NAV[i].id);
-                if (el && window.scrollY + 140 >= el.offsetTop) {
-                    setActive(NAV[i].id);
-                    break;
-                }
+                if (el && window.scrollY + 120 >= el.offsetTop) { setActive(NAV[i].id); break; }
             }
         };
         window.addEventListener('scroll', onScroll, { passive: true });
@@ -38,133 +34,116 @@ export default function Navbar() {
 
     return (
         <motion.header
-            initial={{ y: -70, opacity: 0 }}
+            initial={{ y: -64, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-                transition: 'background 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease',
-                padding: scrolled ? '0.75rem 0' : '1.25rem 0',
-                background: scrolled
-                    ? 'rgba(2,8,16,0.88)'
-                    : 'transparent',
+                borderBottom: scrolled ? '1px solid #2A2720' : '1px solid transparent',
+                background: scrolled ? 'rgba(11,10,9,0.94)' : 'transparent',
                 backdropFilter: scrolled ? 'blur(20px)' : 'none',
-                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                transition: 'background 0.35s ease, border-color 0.35s ease',
+                padding: scrolled ? '0.8rem 0' : '1.2rem 0',
             }}
         >
-            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
                 {/* Logo */}
-                <button
-                    onClick={() => scrollTo('home')}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'none', border: 'none' }}
-                >
+                <button onClick={() => go('home')} style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                     <div style={{
-                        width: 34, height: 34, borderRadius: 10,
-                        background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '0.85rem', fontWeight: 700, color: '#fff',
-                        fontFamily: 'Space Grotesk, sans-serif',
+                        width: 36, height: 36, borderRadius: 8,
+                        background: 'var(--fire)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.8rem', color: '#0B0A09', letterSpacing: '-0.02em',
                     }}>
                         PNR
                     </div>
-                    <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '1rem', color: '#f0f4ff', letterSpacing: '-0.01em' }}>
-                        Narendar
-                    </span>
+                    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.88rem', color: 'var(--t1)', letterSpacing: '-0.02em' }}>
+                            Narendar Reddy
+                        </span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--t3)', letterSpacing: '0.08em' }}>
+                            ENG · EDU
+                        </span>
+                    </div>
                 </button>
 
                 {/* Desktop Nav */}
-                <nav style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hidden md:flex">
+                <nav className="hidden md:flex" style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
                     {NAV.map(n => (
                         <button
                             key={n.id}
-                            onClick={() => scrollTo(n.id)}
+                            onClick={() => go(n.id)}
                             style={{
-                                background: active === n.id ? 'rgba(255,255,255,0.07)' : 'none',
-                                border: active === n.id ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
-                                borderRadius: 8,
-                                padding: '0.4rem 0.9rem',
-                                fontSize: '0.85rem',
-                                fontWeight: active === n.id ? 600 : 400,
-                                color: active === n.id ? '#f0f4ff' : 'rgba(200,210,240,0.55)',
-                                transition: 'all 0.2s ease',
+                                fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.82rem',
+                                background: 'none', border: 'none',
+                                borderRadius: 8, padding: '0.4rem 0.75rem',
+                                color: active === n.id ? 'var(--fire)' : 'var(--t2)',
+                                transition: 'color 0.2s ease',
+                                letterSpacing: '-0.01em',
                             }}
-                            onMouseEnter={e => {
-                                if (active !== n.id) (e.currentTarget as HTMLButtonElement).style.color = '#f0f4ff';
-                            }}
-                            onMouseLeave={e => {
-                                if (active !== n.id) (e.currentTarget as HTMLButtonElement).style.color = 'rgba(200,210,240,0.55)';
-                            }}
+                            onMouseEnter={e => { if (active !== n.id) (e.target as HTMLElement).style.color = 'var(--t1)'; }}
+                            onMouseLeave={e => { if (active !== n.id) (e.target as HTMLElement).style.color = 'var(--t2)'; }}
                         >
                             {n.label}
                         </button>
                     ))}
                 </nav>
 
-                {/* CTA */}
-                <button
-                    onClick={() => scrollTo('contact')}
-                    className="btn btn-primary hidden md:flex"
-                    style={{ padding: '0.55rem 1.35rem', fontSize: '0.85rem', borderRadius: 10 }}
-                >
-                    Hire Me
-                </button>
-
-                {/* Mobile Toggle */}
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="md:hidden"
-                    style={{ background: 'none', border: 'none', color: '#f0f4ff', padding: '0.25rem' }}
-                >
-                    {open ? <X size={22} /> : <Menu size={22} />}
-                </button>
+                {/* CTA + Toggle */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <button onClick={() => go('contact')} className="btn btn-fire" style={{ padding: '0.55rem 1.25rem', fontSize: '0.82rem' }}
+                        hidden={false}>
+                        Hire Me →
+                    </button>
+                    <button
+                        onClick={() => setOpen(!open)}
+                        style={{ background: 'none', border: 'none', color: 'var(--t1)', display: 'none', padding: '0.25rem' }}
+                        className="mobile-toggle"
+                    >
+                        {open ? <X size={22} /> : <Menu size={22} />}
+                    </button>
+                </div>
             </div>
 
-            {/* Mobile Drawer */}
+            {/* Mobile drawer */}
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.28, ease: 'easeInOut' }}
-                        style={{
-                            overflow: 'hidden',
-                            background: 'rgba(8,12,26,0.96)',
-                            backdropFilter: 'blur(20px)',
-                            borderTop: '1px solid rgba(255,255,255,0.06)',
-                        }}
+                        initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
+                        style={{ overflow: 'hidden', background: '#0F0E0D', borderTop: '1px solid var(--border)' }}
                     >
-                        <div style={{ padding: '1rem 1.5rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                             {NAV.map(n => (
-                                <button
-                                    key={n.id}
-                                    onClick={() => { scrollTo(n.id); setOpen(false); }}
+                                <button key={n.id} onClick={() => { go(n.id); setOpen(false); }}
                                     style={{
-                                        background: active === n.id ? 'rgba(99,102,241,0.1)' : 'none',
-                                        border: 'none',
-                                        borderRadius: 10,
-                                        padding: '0.75rem 1rem',
-                                        textAlign: 'left',
-                                        fontSize: '0.9rem',
-                                        fontWeight: active === n.id ? 600 : 400,
-                                        color: active === n.id ? '#a5b4fc' : 'rgba(200,210,240,0.6)',
+                                        background: active === n.id ? 'rgba(249,115,22,0.08)' : 'none', border: 'none',
+                                        borderLeft: active === n.id ? '3px solid var(--fire)' : '3px solid transparent',
+                                        borderRadius: 8, padding: '0.75rem 1rem', textAlign: 'left',
+                                        fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.9rem',
+                                        color: active === n.id ? 'var(--fire)' : 'var(--t2)',
                                         transition: 'all 0.2s',
                                     }}
                                 >
                                     {n.label}
                                 </button>
                             ))}
-                            <button
-                                onClick={() => { scrollTo('contact'); setOpen(false); }}
-                                className="btn btn-primary"
-                                style={{ marginTop: '0.75rem', borderRadius: 12 }}
-                            >
-                                Hire Me
+                            <button onClick={() => { go('contact'); setOpen(false); }} className="btn btn-fire"
+                                style={{ marginTop: '0.75rem', justifyContent: 'center' }}>
+                                Hire Me →
                             </button>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <style>{`
+        @media (max-width: 820px) {
+          .mobile-toggle { display: flex !important; }
+          nav.hidden { display: none !important; }
+          .btn.btn-fire:not(.mobile-toggle + .btn-fire) { display: none; }
+        }
+      `}</style>
         </motion.header>
     );
 }

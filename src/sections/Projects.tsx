@@ -3,143 +3,118 @@ import { useInView } from 'react-intersection-observer';
 import { projects } from '../data/portfolio';
 import { Github, ExternalLink } from 'lucide-react';
 
-const CAT_COLOR: Record<string, string> = {
-    'Full Stack': '#60a5fa',
-    'AI/ML': '#a78bfa',
-    'Desktop': '#34d399',
+const CAT_TAG: Record<string, string> = {
+    'Full Stack': 'tag-fire',
+    'AI/ML': 'tag-ember',
+    'Desktop': 'tag-sage',
 };
 
 export default function Projects() {
     const { ref, inView } = useInView({ threshold: 0.05, triggerOnce: true });
 
     return (
-        <section id="projects" ref={ref} style={{ background: '#060a18' }}>
-            <div className="section-wrap section-pad">
+        <section id="projects" ref={ref} style={{ background: 'var(--bg)' }} className="section">
+            <div className="wrap" style={{ position: 'relative' }}>
 
-                {/* ── Header ── */}
+                <div className="section-num" style={{ position: 'absolute', right: 0, top: '-3rem', zIndex: 0 }}>05</div>
+
+                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.55 }}
-                    style={{ marginBottom: '3.5rem' }}
+                    transition={{ duration: 0.5 }}
+                    style={{ marginBottom: '3rem', position: 'relative', zIndex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}
                 >
-                    <span className="section-label">🚀 Projects</span>
-                    <h2 className="section-title">
-                        Things I've{' '}
-                        <span className="gradient-text">Built</span>
-                    </h2>
-                    <p className="section-subtitle">
-                        Production-grade projects solving real problems — from LMS platforms to AI-powered tools.
+                    <div>
+                        <span className="eyebrow">05 — Projects</span>
+                        <h2 className="h2">Things I've<br /><span className="fire-text">Built</span></h2>
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--t3)', maxWidth: 280, textAlign: 'right' }}>
+                        Production-grade software solving real problems at scale.
                     </p>
-                    <div className="glow-line" />
                 </motion.div>
 
-                {/* ── Project Grid ── */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                {/* Project grid */}
+                <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                     {projects.map((p, i) => {
-                        const color = CAT_COLOR[p.category] ?? '#60a5fa';
+                        const isLeft = i % 2 === 0;
+                        const tagCls = CAT_TAG[p.category] ?? 'tag-fire';
                         return (
                             <motion.div
                                 key={p.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={inView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                                className="glass project-card"
+                                initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+                                animate={inView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ delay: i * 0.1, duration: 0.55 }}
+                                className="card"
                                 style={{
-                                    display: 'flex', flexDirection: 'column',
-                                    overflow: 'hidden',
-                                    borderColor: 'rgba(255,255,255,0.08)',
+                                    padding: '1.75rem',
+                                    display: 'grid',
+                                    gridTemplateColumns: 'auto 1fr auto',
+                                    gap: '1.5rem',
+                                    alignItems: 'center',
+                                    borderLeft: `3px solid ${p.featured ? 'var(--fire)' : 'var(--border)'}`,
+                                    borderRadius: '0 14px 14px 0',
+                                    transition: 'border-color 0.25s, background 0.25s, box-shadow 0.25s',
                                 }}
                                 onMouseEnter={e => {
-                                    (e.currentTarget as HTMLElement).style.borderColor = `${color}35`;
-                                    (e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 1px ${color}25, 0 16px 48px rgba(0,0,0,0.4)`;
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.borderLeftColor = 'var(--fire)';
+                                    el.style.boxShadow = '0 4px 32px -8px rgba(249,115,22,0.2)';
+                                    el.style.background = 'var(--card-2)';
                                 }}
                                 onMouseLeave={e => {
-                                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-                                    (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.borderLeftColor = p.featured ? 'var(--fire)' : 'var(--border)';
+                                    el.style.boxShadow = 'none';
+                                    el.style.background = 'var(--card)';
                                 }}
                             >
-                                {/* Top accent bar */}
-                                <div style={{ height: 3, background: `linear-gradient(90deg, ${color}, transparent)` }} />
+                                {/* Index */}
+                                <div style={{
+                                    fontFamily: 'var(--font-mono)', fontSize: '1.5rem', fontWeight: 900,
+                                    color: 'rgba(249,115,22,0.12)', lineHeight: 1, userSelect: 'none', flexShrink: 0, minWidth: 40,
+                                }}>
+                                    {String(i + 1).padStart(2, '0')}
+                                </div>
 
-                                <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    {/* Meta row */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>
-                                        <span style={{
-                                            fontSize: '0.72rem', fontWeight: 700, padding: '0.25rem 0.7rem', borderRadius: 100,
-                                            background: `${color}15`, border: `1px solid ${color}35`, color,
-                                        }}>
-                                            {p.category}
-                                        </span>
-                                        {p.featured && (
-                                            <span style={{ fontSize: '0.72rem', color: '#fcd34d', fontWeight: 600 }}>★ Featured</span>
-                                        )}
+                                {/* Content */}
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '0.5rem' }}>
+                                        <h3 className="h3" style={{ margin: 0, fontSize: 'clamp(1rem, 2.5vw, 1.15rem)' }}>{p.title}</h3>
+                                        <span className={`tag ${tagCls}`}>{p.category}</span>
+                                        {p.featured && <span className="tag tag-ember">⭐ Featured</span>}
                                     </div>
-
-                                    {/* Title */}
-                                    <h3 style={{
-                                        fontFamily: 'Space Grotesk', fontWeight: 700,
-                                        fontSize: 'clamp(1rem, 2.5vw, 1.1rem)',
-                                        color: '#f0f4ff', marginBottom: '0.75rem', lineHeight: 1.3,
-                                    }}>
-                                        {p.title}
-                                    </h3>
-
-                                    {/* Description */}
-                                    <p style={{
-                                        fontSize: '0.875rem', color: 'rgba(200,210,240,0.58)', lineHeight: 1.7,
-                                        marginBottom: '1.25rem', flex: 1,
-                                    }}>
+                                    <p style={{ fontSize: '0.88rem', color: 'var(--t2)', lineHeight: 1.65, marginBottom: '1rem', maxWidth: 600 }}>
                                         {p.description}
                                     </p>
-
-                                    {/* Tech pills */}
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                                        {p.tech.map(t => <span key={t} className="pill">{t}</span>)}
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                        {p.tech.map(t => <span key={t} className="tag">{t}</span>)}
                                     </div>
+                                </div>
 
-                                    {/* Action buttons */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.625rem' }}>
-                                        <a
-                                            href={p.github} target="_blank" rel="noopener noreferrer"
-                                            className="btn btn-ghost"
-                                            style={{ fontSize: '0.82rem', padding: '0.6rem 1rem', borderRadius: 10, textDecoration: 'none' }}
-                                        >
-                                            <Github size={14} /> GitHub
-                                        </a>
-                                        <a
-                                            href={p.live} target="_blank" rel="noopener noreferrer"
-                                            className="btn"
-                                            style={{
-                                                fontSize: '0.82rem', padding: '0.6rem 1rem', borderRadius: 10, textDecoration: 'none',
-                                                background: `linear-gradient(135deg, ${color}30, ${color}18)`,
-                                                border: `1px solid ${color}45`, color,
-                                            }}
-                                        >
-                                            <ExternalLink size={14} /> Live Demo
-                                        </a>
-                                    </div>
+                                {/* Actions */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', flexShrink: 0 }}>
+                                    <a href={p.github} target="_blank" rel="noopener noreferrer"
+                                        className="btn btn-outline" style={{ padding: '0.55rem 1rem', fontSize: '0.8rem', textDecoration: 'none', justifyContent: 'center' }}>
+                                        <Github size={14} /> GitHub
+                                    </a>
+                                    <a href={p.live} target="_blank" rel="noopener noreferrer"
+                                        className="btn btn-fire" style={{ padding: '0.55rem 1rem', fontSize: '0.8rem', textDecoration: 'none', justifyContent: 'center' }}>
+                                        <ExternalLink size={14} /> Live
+                                    </a>
                                 </div>
                             </motion.div>
                         );
                     })}
                 </div>
-
-                {/* GitHub CTA */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={inView ? { opacity: 1 } : {}}
-                    transition={{ delay: 0.8 }}
-                    style={{ textAlign: 'center', marginTop: '3rem' }}
-                >
-                    <a
-                        href="https://github.com/narendar" target="_blank" rel="noopener noreferrer"
-                        className="btn btn-ghost"
-                        style={{ textDecoration: 'none', display: 'inline-flex' }}
-                    >
-                        <Github size={16} /> View All on GitHub
-                    </a>
-                </motion.div>
             </div>
+
+            <style>{`
+        @media (max-width: 640px) {
+          #projects .card > * { grid-column: span 3; }
+          #projects .card { grid-template-columns: 1fr !important; }
+          #projects .card > div:first-child { display: none; }
+        }
+      `}</style>
         </section>
     );
 }
